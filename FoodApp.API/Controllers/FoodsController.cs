@@ -9,7 +9,7 @@ namespace FoodApp.API.Controllers
     {
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             return Ok(new string[] {"Kylling", "Bacon"});
         }
