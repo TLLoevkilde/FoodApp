@@ -1,7 +1,12 @@
+using FoodApp.API.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<FoodAppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FoodAppConnectionString")));
 
 var app = builder.Build();
 
