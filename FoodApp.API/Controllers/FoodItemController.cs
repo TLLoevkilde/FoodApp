@@ -1,8 +1,7 @@
-﻿using FoodApp.API.Data;
-using FoodApp.API.Models.Domain;
-using Microsoft.AspNetCore.Http;
+﻿using FoodApp.API.Models.Domain;
+using FoodApp.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace FoodApp.API.Controllers
 {
@@ -10,18 +9,17 @@ namespace FoodApp.API.Controllers
     [ApiController]
     public class FoodItemController : ControllerBase
     {
-        private readonly FoodAppDbContext dbContext;
+        private readonly IFoodItemService foodItemService;
 
-        public FoodItemController(FoodAppDbContext dbContext)
+        public FoodItemController(IFoodItemService foodItemService)
         {
-            this.dbContext = dbContext;
+            this.foodItemService = foodItemService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] FoodItem foodItem)
         {
-            dbContext.FoodItems.Add(foodItem);
-            await dbContext.SaveChangesAsync();
+            await foodItemService.CreateAsync(foodItem);
             return Ok(foodItem);
         }
 
@@ -29,7 +27,7 @@ namespace FoodApp.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            List<FoodItem> foodItems = await dbContext.FoodItems.ToListAsync();
+            List<FoodItem> foodItems = await foodItemService.GetAllAsync();
             return Ok(foodItems);
         }
 

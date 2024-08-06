@@ -1,6 +1,6 @@
-﻿namespace FoodApp.API.Models.Domain
+﻿namespace FoodApp.API.Models.DTO
 {
-    public class FoodItem
+    public class FoodItemDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -8,11 +8,10 @@
         public double CalPerHundredGrams { get; set; }
         public double WeightInGrams { get; set; }
         public double Price { get; set; }
-        public double ProteinPerWeightInGrams { get; set; }
+        public double GramsOfProteinPerWeightInGrams { get; set; }
         public double CalPerHundredGramsOfProtein { get; set; }
         public double PricePerHundredGramsOfProtein { get; set; }
         public double Score { get; set; }
 
     }
 }
-    
