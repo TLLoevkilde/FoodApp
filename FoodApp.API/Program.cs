@@ -1,4 +1,5 @@
 using FoodApp.API.Data;
+using FoodApp.API.Mappings;
 using FoodApp.API.Repositories;
 using FoodApp.API.Services;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<FoodAppDbContext>(options =>
 
 builder.Services.AddScoped<IFoodItemRepository, FoodItemRepository>();
 builder.Services.AddScoped<IFoodItemService, FoodItemService>();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
