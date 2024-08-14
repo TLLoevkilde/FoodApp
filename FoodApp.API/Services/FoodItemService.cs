@@ -16,7 +16,7 @@ namespace FoodApp.API.Services
             foodItem.ProteinPerWeightInGrams = foodItem.ProteinPerHundredGrams * foodItem.WeightInGrams / 100;
             foodItem.CalPerHundredGramsOfProtein = 100 / foodItem.ProteinPerHundredGrams * foodItem.CalPerHundredGrams;
             foodItem.PricePerHundredGramsOfProtein = 100 / foodItem.ProteinPerWeightInGrams * foodItem.Price;
-            foodItem.Score = foodItem.PricePerHundredGramsOfProtein * foodItem.CalPerHundredGramsOfProtein;
+            foodItem.Score = (int)Math.Round(foodItem.PricePerHundredGramsOfProtein * foodItem.CalPerHundredGramsOfProtein);
 
             await foodItemRepository.CreateAsync(foodItem);
             return foodItem;
