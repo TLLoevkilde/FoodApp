@@ -14,8 +14,8 @@ namespace FoodApp.API.Services
         public async Task<FoodItem> CreateAsync(FoodItem foodItem)
         {
             foodItem.ProteinPerWeightInGrams = foodItem.ProteinPerHundredGrams * foodItem.WeightInGrams / 100;
-            foodItem.CalPerHundredGramsOfProtein = 100 / foodItem.ProteinPerHundredGrams * foodItem.CalPerHundredGrams;
-            foodItem.PricePerHundredGramsOfProtein = 100 / foodItem.ProteinPerWeightInGrams * foodItem.Price;
+            foodItem.CalPerHundredGramsOfProtein = (int)Math.Round(100 / foodItem.ProteinPerHundredGrams * foodItem.CalPerHundredGrams);
+            foodItem.PricePerHundredGramsOfProtein = Math.Round(100 / foodItem.ProteinPerWeightInGrams * foodItem.Price,2);
             foodItem.Score = (int)Math.Round(foodItem.PricePerHundredGramsOfProtein * foodItem.CalPerHundredGramsOfProtein);
 
             await foodItemRepository.CreateAsync(foodItem);

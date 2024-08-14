@@ -9,7 +9,7 @@
         public double WeightInGrams { get; set; }
         public double Price { get; set; }
         public double ProteinPerWeightInGrams { get; set; }
-        public double CalPerHundredGramsOfProtein { get; set; }
+        public int CalPerHundredGramsOfProtein { get; set; }
         public double PricePerHundredGramsOfProtein { get; set; }
         public int Score { get; set; }
 

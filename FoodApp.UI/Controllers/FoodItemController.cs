@@ -1,5 +1,10 @@
 ﻿using FoodApp.UI.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace FoodApp.UI.Controllers
 {
@@ -11,9 +16,10 @@ namespace FoodApp.UI.Controllers
         {
             this.httpClientFactory = httpClientFactory;
         }
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            List<FoodItemDto> FoodItems =new List<FoodItemDto>();
+            List<FoodItemDto> foodItems = new List<FoodItemDto>();
 
             try
             {
@@ -23,16 +29,35 @@ namespace FoodApp.UI.Controllers
 
                 httpResponseMessage.EnsureSuccessStatusCode();
 
-                FoodItems.AddRange(await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<FoodItemDto>>()); // FoodItems is added to the list
+                foodItems = (await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<FoodItemDto>>()).ToList(); // Convert to List
             }
             catch (Exception ex)
             {
-
+                // Handle the exception (log it, rethrow it, etc.)
                 throw;
             }
 
+            // Sort the list based on sortOrder
+            switch (sortOrder)
+            {
+                case "pricePerProtein":
+                    foodItems = foodItems.OrderBy(f => f.PricePerHundredGramsOfProtein).ToList();
+                    break;
+                case "caloriesPerProtein":
+                    foodItems = foodItems.OrderBy(f => f.CalPerHundredGramsOfProtein).ToList();
+                    break;
+                case "score":
+                    foodItems = foodItems.OrderBy(f => f.Score).ToList();
+                    break;
+                default:
+                    // Default to sorting by PricePerHundredGramsOfProtein ascending
+                    foodItems = foodItems.OrderBy(f => f.PricePerHundredGramsOfProtein).ToList();
+                    break;
+            }
 
-            return View(FoodItems);  // FoodItem list is added to the View
+            // Pass the sorted list and current sort order to the view
+            ViewBag.CurrentSort = sortOrder;
+            return View(foodItems);
         }
     }
 }

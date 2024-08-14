@@ -1,7 +1,7 @@
-﻿@model IEnumerable<FoodApp.UI.Models.DTO.FoodItemDto> // Model being sent from Index action method in Frontend controller
-
+﻿@model IEnumerable<FoodApp.UI.Models.DTO.FoodItemDto>
 
 @{
+    var currentSort = ViewBag.CurrentSort ?? string.Empty;
 }
 
 <h1 class="mt-3">Food items</h1>
@@ -10,8 +10,17 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Amount in grams</th>
             <th>Price</th>
-            <th>Score</th>
+            <th>
+                @Html.ActionLink("Price Per 100g of Protein", "Index", new { sortOrder = "pricePerProtein" })
+            </th>
+            <th>
+                @Html.ActionLink("Calories Per 100g of Protein", "Index", new { sortOrder = "caloriesPerProtein" })
+            </th>
+            <th>
+                @Html.ActionLink("Score", "Index", new { sortOrder = "score" })
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -19,10 +28,12 @@
         {
             <tr>
                 <td>@foodItem.Name</td>
+                <td>@foodItem.WeightInGrams</td>
                 <td>@foodItem.Price</td>
+                <td>@foodItem.PricePerHundredGramsOfProtein</td>
+                <td>@foodItem.CalPerHundredGramsOfProtein</td>
                 <td>@foodItem.Score</td>
             </tr>
         }
     </tbody>
-
 </table>
