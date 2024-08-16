@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<FoodApp.UI.Models.DTO.FoodItemDto>
 
-@{
-    var currentSort = ViewBag.CurrentSort ?? string.Empty;
-}
-
 <h1 class="mt-3">Food items</h1>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-secondary" asp-controller="FoodItem" asp-action="Create">Create Food Item</a>
+</div>
 
 <table class="table table-bordered">
     <thead>
@@ -21,6 +21,7 @@
             <th>
                 @Html.ActionLink("Score", "Index", new { sortOrder = "score" })
             </th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,10 @@
                 <td>@foodItem.PricePerHundredGramsOfProtein</td>
                 <td>@foodItem.CalPerHundredGramsOfProtein</td>
                 <td>@foodItem.Score</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="FoodItem" asp-action="Update" asp-route-id="@foodItem.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="FoodItem" asp-action="Delete" asp-route-id="@foodItem.Id">Delete</a>
+                </td>
             </tr>
         }
     </tbody>

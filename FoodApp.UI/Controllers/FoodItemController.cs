@@ -17,6 +17,7 @@ namespace FoodApp.UI.Controllers
             this.httpClientFactory = httpClientFactory;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(string sortOrder)
         {
             List<FoodItemDto> foodItems = new List<FoodItemDto>();
@@ -59,5 +60,95 @@ namespace FoodApp.UI.Controllers
             ViewBag.CurrentSort = sortOrder;
             return View(foodItems);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateFoodItemDto createFoodItemDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var client = httpClientFactory.CreateClient();
+                var response = await client.PostAsJsonAsync("https://localhost:7192/api/fooditem", createFoodItemDto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(createFoodItemDto);
+        }
+
+        // GET: Load the existing food item to edit
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7192/api/fooditem/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var foodItem = await response.Content.ReadFromJsonAsync<UpdateFoodItemDto>();
+                return View(foodItem);
+            }
+
+            return NotFound();
+        }
+
+        // POST: Update the food item
+        [HttpPost]
+        public async Task<IActionResult> Update(Guid id, UpdateFoodItemDto updateFoodItemDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var client = httpClientFactory.CreateClient();
+                var response = await client.PutAsJsonAsync($"https://localhost:7192/api/fooditem/{id}", updateFoodItemDto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(updateFoodItemDto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7192/api/fooditem/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var foodItem = await response.Content.ReadFromJsonAsync<FoodItemDto>();
+                return View(foodItem);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.DeleteAsync($"https://localhost:7192/api/fooditem/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return NotFound();
+        }
+
+
+
+
+
     }
 }

@@ -17,7 +17,12 @@ namespace FoodApp.API.Mappings
             .ForMember(dest => dest.PricePerHundredGramsOfProtein, opt => opt.Ignore())
             .ForMember(dest => dest.Score, opt => opt.Ignore());
 
-
+            CreateMap<UpdateFoodItemDto, FoodItem>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ProteinPerWeightInGrams, opt => opt.Ignore())
+            .ForMember(dest => dest.CalPerHundredGramsOfProtein, opt => opt.Ignore())
+            .ForMember(dest => dest.PricePerHundredGramsOfProtein, opt => opt.Ignore())
+            .ForMember(dest => dest.Score, opt => opt.Ignore());
         }
     }
 }

@@ -12,6 +12,7 @@ namespace FoodApp.API.Repositories
         {
             this.dbContext = dbContext;
         }
+
         public async Task<FoodItem> CreateAsync(FoodItem foodItem)
         {
             await dbContext.FoodItems.AddAsync(foodItem);
@@ -22,6 +23,38 @@ namespace FoodApp.API.Repositories
         public async Task<List<FoodItem>> GetAllAsync()
         {
             return await dbContext.FoodItems.ToListAsync();
+        }
+
+        public async Task<FoodItem?> GetByIdAsync(Guid id)
+        {
+            return await dbContext.FoodItems.FindAsync(id);
+        }
+
+        public async Task<FoodItem?> UpdateAsync(FoodItem foodItem)
+        {
+            var existingFoodItem = await dbContext.FoodItems.FindAsync(foodItem.Id);
+
+            if (existingFoodItem == null)
+            {
+                return null;
+            }
+
+            await dbContext.SaveChangesAsync();
+            return existingFoodItem;
+        }
+
+        public async Task<FoodItem?> DeleteAsync(Guid id)
+        {
+            var existingFoodItem = await dbContext.FoodItems.FindAsync(id);
+
+            if (existingFoodItem == null)
+            {
+                return null;
+            }
+
+            dbContext.FoodItems.Remove(existingFoodItem);
+            await dbContext.SaveChangesAsync();
+            return existingFoodItem;
         }
     }
 }
